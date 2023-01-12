@@ -6,6 +6,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-perf_monitor = "0.2.0"
+sysinfo = "0.27.5"
 clearscreen = "2.0.0"
 partial = "0.4.0"
+

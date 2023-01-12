@@ -1,1 +1,1 @@
-c:\Users\admin\cris\target\debug\cris.exe: c:\Users\admin\cris\src\main.rs
+/home/crisal/PCdataa/target/debug/cris: /home/crisal/PCdataa/src/main.rs
