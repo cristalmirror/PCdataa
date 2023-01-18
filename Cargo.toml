@@ -1,5 +1,5 @@
 [package]
-name = "cris"
+name = "pcdata"
 version = "0.1.0"
 edition = "2021"
 
@@ -9,4 +9,4 @@ edition = "2021"
 sysinfo = "0.27.5"
 clearscreen = "2.0.0"
 partial = "0.4.0"
-
+colored = "2.0.0"

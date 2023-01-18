@@ -1,13 +1,44 @@
-use sysinfo::{CpuExt, System, SystemExt};
+use sysinfo::{CpuExt, System, SystemExt,NetworkExt,NetworkData, NetworksExt, ProcessExt};
 use clearscreen;
 use std::{thread,time,iter};
 use std::env;
+use colored::Colorize;
 
 //tipo de objeto
-struct UtilitysOfSystem;
+struct UtilitysOfSystem{
+
+    sys_mon_all: System,
+    
+}
 
 //metodos del sistema
 impl UtilitysOfSystem {
+
+    //nonitoreo de la red
+    fn network_minitor_intern(&self,b: &mut System) {
+
+	loop {
+
+	    println!("=#=#=#=#=#=#=#=#=#=#=#=#[NETWORK]=#=#=#=#=#=#=#=#=#=#=#=#");
+	    //transmicion de los datos 
+	    for (name_info, data_network) in self.sys_mon_all.networks() {
+
+		println!("[NETWORKS INERFACE]: {:?}",name_info);
+		println!("[DOWNLOAD]: {:?} Bytes",data_network.received());
+		println!("[UPLOAD]: {:?} Bytes",data_network.transmitted());
+
+		//refresca las interface de la red
+		let net = b.networks_mut();
+		net.refresh();
+		}
+
+	    //tiempo de refresco de la imprecion.
+	    thread::sleep(time::Duration::from_millis(500));
+	    //refresca la terminal
+	    clearscreen::clear().unwrap();
+	}
+	
+    }
 
     //cpu monitor 
     fn cpu_monitor_intern(&self) {	
@@ -41,22 +72,20 @@ impl UtilitysOfSystem {
     fn memory_monitor_intern(&self) {
 
 	//imprime el estado de la memoria
-    	println!("=#=#=#=#=#=#=#=#=#=#=#=#[MEMORY]=#=#=#=#=#=#=#=#=#=#=#=#");
+	println!("=#=#=#=#=#=#=#=#=#=#=#=#[MEMORY]=#=#=#=#=#=#=#=#=#=#=#=#");
 
-	println!("[MEMORY USED]:  bytes \n[MEMORY VIRTUAL USED]:  bytes",);	
+	println!("[TOTAL MEMORY]: {} Bytes",self.sys_mon_all.total_memory());
+	println!("[USED  MEMORY]: {} Bytes",self.sys_mon_all.used_memory());
+	println!("[TOTAL  SWAP ]: {} Bytes",self.sys_mon_all.total_swap());
+	println!("[ USED  SWAP ]: {} Bytes",self.sys_mon_all.used_swap());
 	
+	
+		
     }
 
-    fn fd_monitor_intern(&self) {
+    
 
-	//descriptor de archivos
-	
-
-	println!("[FILE DESCRIPTOR]: ",);
-	
-    }
-
-    fn io_monitor_intern(&self) {
+    fn disk_monitor_intern(&self) {
 
 	//monitor del sistema de entrada/salida
 	
@@ -73,9 +102,15 @@ fn main() {
 
     //manejo de los argumentos del main
     let args: Vec<String> = env::args().collect();
+
+    let mut sys_ma_2 = System::new_all();
     
     //instanciacion del objeto
-    let impl_objet_system = UtilitysOfSystem;
+    let impl_objet_system = UtilitysOfSystem{
+
+	sys_mon_all: System::new_all()
+	
+    };
     
     //imprime la carga de la cpu
     println!("=#=#=#=#=#=#=#=#=#=#=#=#PCdata=#=#=#=#=#=#=#=#=#=#=#=#");
@@ -96,6 +131,19 @@ fn main() {
 	    
 	    //monitoreo de la cpu
 	    impl_objet_system.memory_monitor_intern();
+	    
+	}
+
+	"-n" => {
+	    //monitor de la memoria
+	    impl_objet_system.network_minitor_intern(&mut sys_ma_2);
+
+	}
+
+	"-d" => {
+
+	    //monitor del disco
+	    impl_objet_system.disk_monitor_intern();
 	    
 	}
 

@@ -1,1 +1,1 @@
-/home/crisal/PCdataa/target/debug/cris: /home/crisal/PCdataa/src/main.rs
+/home/crisal/PCdataa/PCdataa/target/debug/cris: /home/crisal/PCdataa/PCdataa/src/main.rs
