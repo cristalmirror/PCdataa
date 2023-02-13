@@ -1,6 +1,0 @@
-use cpu_freq;
-
-fn main() {
-    
-    println!("Hello, world! {:?} ",cpu_freq::get());
-}
